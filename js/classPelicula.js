@@ -1,4 +1,4 @@
-class Pelicula{
+export default class Pelicula{
     #codigo;
     #titulo;
     #descripcion;
@@ -86,3 +86,4 @@ class Pelicula{
         this.#estado = estado;
     }
 }
+
