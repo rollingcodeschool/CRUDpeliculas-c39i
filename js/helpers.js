@@ -21,15 +21,29 @@ function validarDuracion(value){
 function validarURLImagen(value){
     let patron = /^(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)$/;
     if(patron.test(value)){
-        console.log('digito valido de 1 a 3 caracteres');
+        console.log('url valida');
         return true;
     }else{
-        console.log('no paso la expresion regular del tiempo');
+        console.log('url invalida');
         return false;
     }
 }
 
-export function sumarioValidaciones(titulo, descripcion, imagen, duracion){
+function validarGenero(texto){
+    if(texto.length > 0 && (texto === 'Aventura' || texto === 'Accion' || texto === 'Drama' || texto === 'Terror')){
+        console.log('genero valido');
+        return true;
+    }else{
+        console.log('genero invalido');
+        return false;
+    }
+}
+
+//agregar la validacion año 1985 - (año actual +1)
+//validacion para el pais
+//validacion para el Reparto
+
+export function sumarioValidaciones(titulo, descripcion, imagen, duracion, genero){
     let resumen='';
     if(!cantidadCaracteres(titulo, 3, 100)){
         resumen += 'Corregir el campo del titulo debe contener entre 3 y 100 caracteres <br>';
@@ -40,6 +54,13 @@ export function sumarioValidaciones(titulo, descripcion, imagen, duracion){
     if(!validarDuracion(duracion)){
         resumen += 'Corregir la duracion, debe ser un numero de 3 digitos como maximo <br>'
     }
+    if(!validarURLImagen(imagen)){
+        resumen += 'Corregir la URL de la imagen, la extension debe ser .jpg, .gif o .png <br>'
+    }
+    if(!validarGenero(genero)){
+        resumen += 'Seleccione un genero de la lista de opciones <br>'
+    }
+
     if(resumen.length !== 0 ){
         return resumen;
     }else{
