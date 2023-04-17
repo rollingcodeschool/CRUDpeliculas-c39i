@@ -47,8 +47,10 @@ function cargarPelicula(e){
          listaPeliculas.push(nuevaPeli);
         //almacenar la peli en Localstorage
         console.log(listaPeliculas);
-        // localStorage.setItem('listaPeliculas', JSON.stringify(listaPeliculas)); //para objetos Publicos funciona
-        
+        console.log(JSON.stringify(listaPeliculas));
+
+        localStorage.setItem('listaPeliculas', JSON.stringify(listaPeliculas)); //para objetos Publicos funciona
+
         //limpiar el formulario
 
         //crear modal

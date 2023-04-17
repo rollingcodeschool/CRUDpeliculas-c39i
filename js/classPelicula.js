@@ -85,5 +85,16 @@ export default class Pelicula{
     setEstado(estado) {
         this.#estado = estado;
     }
+    //stringify accede a este medoto
+    toJSON(){
+        return {
+            codigo: this.#codigo,
+            titulo: this.#titulo,
+            descripcion: this.#descripcion,
+            imagen: this.#imagen,
+            genero: this.#genero,
+            duracion: this.#duracion
+        }
+    }
 }
 
