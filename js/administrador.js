@@ -17,7 +17,7 @@ const modalPelicula = new bootstrap.Modal(document.querySelector('#modalAgregar'
 const formularioPelicula = document.getElementById('formAdministrarPelicula');
 
 //manejadores de eventos
-btnEditar.addEventListener('click', crearPeli);
+// btnEditar.addEventListener('click', crearPeli);
 btnAgregar.addEventListener('click', mostrarModalPeli);
 formularioPelicula.addEventListener('submit', cargarPelicula);
 
@@ -50,17 +50,17 @@ function cargaInicial(){
     // verificar si listaPeliculas tiene datos
     if(listaPeliculas.length > 0){
         //dibujes los datos en la tabla
-        listaPeliculas.map((pelicula)=> crearFila(pelicula) )
+        listaPeliculas.map((pelicula, indice)=> crearFila(pelicula, indice) )
     }
     //el else seria mostrar un mensaje q no hay datos para cargar o dejo la tabla vacia
 }
 
-function crearFila(pelicula){
+function crearFila(pelicula, indice){
     //aqui dibujo el TR
     let datosTablaPelicula = document.querySelector('tbody');
     console.log(datosTablaPelicula);
     datosTablaPelicula.innerHTML += `<tr>
-    <th>1</th>
+    <th>${indice + 1}</th>
     <td>${pelicula.titulo}</td>
     <td class="text-truncate">${pelicula.descripcion}</td>
     <td class="text-truncate">${pelicula.imagen}</td>
