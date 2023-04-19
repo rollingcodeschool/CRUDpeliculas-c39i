@@ -13,18 +13,37 @@ const pais = document.getElementById('pais');
 const reparto = document.getElementById('reparto');
 const imagen = document.getElementById('imagen');
 const msjFormulario = document.getElementById('msjFormulario');
-
+const modalPelicula = new bootstrap.Modal(document.querySelector('#modalAgregar'));
 const formularioPelicula = document.getElementById('formAdministrarPelicula');
 
-//trabajar las peliculas para que vuelvan a ser un objeto Pelicula.
-let listaPeliculas = JSON.parse(localStorage.getItem('listaPeliculas')) || [];
-console.log(listaPeliculas)
-
+//manejadores de eventos
 btnEditar.addEventListener('click', crearPeli);
 btnAgregar.addEventListener('click', mostrarModalPeli);
 formularioPelicula.addEventListener('submit', cargarPelicula);
 
-const modalPelicula = new bootstrap.Modal(document.querySelector('#modalAgregar'));
+
+//trabajar las peliculas para que vuelvan a ser un objeto Pelicula. 
+// let listaPeliculas = JSON.parse(localStorage.getItem('listaPeliculas')) || []; esto me devuelve un objeto de tipo Object
+let  listaPeliculas = localStorage.getItem('listaPeliculas');
+
+if(!listaPeliculas){
+    //si lista peliculas no existe en Localstorage
+    listaPeliculas = [];
+}else{
+    //si lista Peliculas tiene datos, quiero transformarlo en un array de objetos Pelicula
+    listaPeliculas = JSON.parse(listaPeliculas).map((pelicula)=> new Pelicula(
+        pelicula.titulo,
+         pelicula.descripcion, 
+         pelicula.imagen, 
+         pelicula.genero, 
+         pelicula.anio, 
+         pelicula.duracion, 
+         pelicula.pais, 
+         pelicula.reparto))
+}
+
+console.log(listaPeliculas)
+
 
 function crearPeli(){
 // crear una nueva peli
@@ -46,8 +65,10 @@ function cargarPelicula(e){
   if(sumario.length === 0){
         console.log('creando la pelicula...')
          //crear la pelicula
-         let nuevaPeli = new Pelicula(titulo.value,descripcion.value, imagen.value, genero.value, anio.value, duracion.value, pais.value, reparto.value);
+         let nuevaPeli = new Pelicula(titulo.value,descripcion.value, imagen.value, genero.value, anio.value, 
+         duracion.value, pais.value, reparto.value);
          listaPeliculas.push(nuevaPeli);
+         console.log(nuevaPeli)
         //almacenar la peli en Localstorage
         guardarEnLocalStorage();
         //limpiar el formulario
