@@ -35,6 +35,7 @@ if (!listaPeliculas) {
   listaPeliculas = JSON.parse(listaPeliculas).map(
     (pelicula) =>
       new Pelicula(
+        pelicula.codigo,
         pelicula.titulo,
         pelicula.descripcion,
         pelicula.imagen,
@@ -71,25 +72,11 @@ function crearFila(pelicula, indice) {
     <td>${pelicula.genero}</td>
     <td>
         <button class="bi bi-pencil-square btn btn-warning" id="btnEditar"></button>
-        <button class="bi bi-x-square btn btn-danger" onclick="borrarPelicula()"></button>
+        <button class="bi bi-x-square btn btn-danger" onclick="borrarPelicula('${pelicula.codigo}')"></button>
     </td>
   </tr>`;
 }
 
-function crearPeli() {
-  // crear una nueva peli
-  let nuevaPeli = new Pelicula(
-    "Super mario",
-    "algo",
-    "url",
-    "aventura",
-    2023,
-    "2hs",
-    "EEUU",
-    "-"
-  );
-  console.log(nuevaPeli);
-}
 
 function mostrarModalPeli() {
   //abrir la ventana modal
@@ -114,6 +101,7 @@ function cargarPelicula(e) {
     console.log("creando la pelicula...");
     //crear la pelicula
     let nuevaPeli = new Pelicula(
+      undefined,
       titulo.value,
       descripcion.value,
       imagen.value,
@@ -157,6 +145,7 @@ function limpiarFormularioPeliculas() {
 // function borrarPelicula(){
 //    }
 
-window.borrarPelicula = ()=>{
+window.borrarPelicula = (codigo)=>{
+  console.log(codigo)
     console.log('aqui borro la peli')
 }
