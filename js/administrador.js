@@ -146,6 +146,19 @@ function limpiarFormularioPeliculas() {
 //    }
 
 window.borrarPelicula = (codigo)=>{
-  console.log(codigo)
-    console.log('aqui borro la peli')
+  console.log(codigo);
+  console.log('aqui borro la peli');
+  //busco en al array de peliculas la peli que quiero borrar
+  let posicionPeli = listaPeliculas.findIndex( pelicula => pelicula.codigo === codigo)
+  console.log(posicionPeli);
+  //borrar del array el objeto pelicula
+  listaPeliculas.splice(posicionPeli,1)
+  //igual los datos del localstorage
+  guardarEnLocalStorage();
+  //quitar la fila de la tabla
+  let datosTablaPelicula = document.querySelector("tbody");
+  // console.log(datosTablaPelicula.children[posicionPeli])
+  datosTablaPelicula.removeChild(datosTablaPelicula.children[posicionPeli]);
+
+  //todo: actualizar la fila en la tabla
 }
