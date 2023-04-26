@@ -83,6 +83,7 @@ function crearFila(pelicula, indice) {
 }
 
 function mostrarModalPeli() {
+  estadoPelicula = true;
   //abrir la ventana modal
   modalPelicula.show();
   console.log("aqui vamos a crear una peli");
@@ -195,7 +196,7 @@ window.borrarPelicula = (codigo) => {
       datosTablaPelicula.removeChild(datosTablaPelicula.children[posicionPeli]);
 
       //todo: actualizar la fila en la tabla como el update
-      
+
       Swal.fire(
         "Borramos la pelicula",
         "La pelicula seleccionada fue eliminada correctamente",
@@ -226,7 +227,7 @@ window.editarPelicula = (codigoUnico) => {
 };
 
 function actualizarPelicula(){
-  //validar los datos
+  //todo: validar los datos
   //necesito la pelicula que estoy editando
   let posicionPelicula = listaPeliculas.findIndex(peli => peli.codigo === codigo.value );
   //actualizar las propiedades de esa pelicula
