@@ -17,6 +17,7 @@ const modalPelicula = new bootstrap.Modal(
   document.querySelector("#modalAgregar")
 );
 const formularioPelicula = document.getElementById("formAdministrarPelicula");
+let estadoPelicula = true; //true = crear una peli, false = editar una pelicula
 
 //manejadores de eventos
 // btnEditar.addEventListener('click', crearPeli);
@@ -71,12 +72,15 @@ function crearFila(pelicula, indice) {
     <td class="text-truncate">${pelicula.imagen}</td>
     <td>${pelicula.genero}</td>
     <td>
-        <button class="bi bi-pencil-square btn btn-warning" id="btnEditar" onclick="editarPelicula('${pelicula.codigo}')"></button>
-        <button class="bi bi-x-square btn btn-danger" onclick="borrarPelicula('${pelicula.codigo}')"></button>
+        <button class="bi bi-pencil-square btn btn-warning" id="btnEditar" onclick="editarPelicula('${
+          pelicula.codigo
+        }')"></button>
+        <button class="bi bi-x-square btn btn-danger" onclick="borrarPelicula('${
+          pelicula.codigo
+        }')"></button>
     </td>
   </tr>`;
 }
-
 
 function mostrarModalPeli() {
   //abrir la ventana modal
@@ -86,6 +90,17 @@ function mostrarModalPeli() {
 
 function cargarPelicula(e) {
   e.preventDefault();
+
+  if (estadoPelicula) {
+    //aqui creo la peli
+    crearPelicula();
+  } else {
+    //editar peli
+    actualizarPelicula();
+  }
+}
+
+function crearPelicula() {
   //validar los datos
   let sumario = sumarioValidaciones(
     titulo.value,
@@ -124,7 +139,11 @@ function cargarPelicula(e) {
     crearFila(nuevaPeli, indicePeli);
     //mostrar un cartel al usuario
 
-    Swal.fire("Pelicula creada", "La pelicula ingresada fue creada correctamente", "success");
+    Swal.fire(
+      "Pelicula creada",
+      "La pelicula ingresada fue creada correctamente",
+      "success"
+    );
     // Tarea verificar cantidad de caracteres en el campo de la descripcion
     // ocultar pasado x tiempo o una vez enviado la pelicula el alert con los errores.
   } else {
@@ -145,49 +164,51 @@ function limpiarFormularioPeliculas() {
 // function borrarPelicula(){
 //    }
 
-window.borrarPelicula = (codigo)=>{
-
+window.borrarPelicula = (codigo) => {
   Swal.fire({
-    title: '¿Esta seguro de borrar la pelicula?',
+    title: "¿Esta seguro de borrar la pelicula?",
     text: "No se puede revertir este proceso posteriomente",
-    icon: 'warning',
+    icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Borrar',
-    cancelButtonText: 'Cancelar'
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Borrar",
+    cancelButtonText: "Cancelar",
   }).then((result) => {
     console.log(result);
     if (result.isConfirmed) {
       //aqui hago todo lo necesario para borrar
       console.log(codigo);
-      console.log('aqui borro la peli');
+      console.log("aqui borro la peli");
       //busco en al array de peliculas la peli que quiero borrar
-      let posicionPeli = listaPeliculas.findIndex( pelicula => pelicula.codigo === codigo)
+      let posicionPeli = listaPeliculas.findIndex(
+        (pelicula) => pelicula.codigo === codigo
+      );
       console.log(posicionPeli);
       //borrar del array el objeto pelicula
-      listaPeliculas.splice(posicionPeli,1)
+      listaPeliculas.splice(posicionPeli, 1);
       //igual los datos del localstorage
       guardarEnLocalStorage();
       //quitar la fila de la tabla
       let datosTablaPelicula = document.querySelector("tbody");
       // console.log(datosTablaPelicula.children[posicionPeli])
       datosTablaPelicula.removeChild(datosTablaPelicula.children[posicionPeli]);
-    
-      //todo: actualizar la fila en la tabla
-      Swal.fire(
-        'Borramos la pelicula',
-        'La pelicula seleccionada fue eliminada correctamente',
-        'success'
-      )
-    }
-  })
-}
 
-window.editarPelicula = (codigoUnico)=>{
+      //todo: actualizar la fila en la tabla como el update
+      
+      Swal.fire(
+        "Borramos la pelicula",
+        "La pelicula seleccionada fue eliminada correctamente",
+        "success"
+      );
+    }
+  });
+};
+
+window.editarPelicula = (codigoUnico) => {
   //mostrar la ventana modal
-  const pelicula = listaPeliculas.find( peli => peli.codigo === codigoUnico)
-  console.log(pelicula)
+  const pelicula = listaPeliculas.find((peli) => peli.codigo === codigoUnico);
+  console.log(pelicula);
   modalPelicula.show();
   //completar los datos en el modal
   codigo.value = pelicula.codigo;
@@ -195,5 +216,44 @@ window.editarPelicula = (codigoUnico)=>{
   descripcion.value = pelicula.descripcion;
   imagen.value = pelicula.imagen;
   genero.value = pelicula.genero;
+  anio.value = pelicula.anio;
+  console.log(pelicula.anio);
+  duracion.value = pelicula.duracion;
+  pais.value = pelicula.pais;
+  reparto.value = pelicula.reparto;
+  //cambiar el estado de la variable bandera
+  estadoPelicula= false;
+};
 
+function actualizarPelicula(){
+  //validar los datos
+  //necesito la pelicula que estoy editando
+  let posicionPelicula = listaPeliculas.findIndex(peli => peli.codigo === codigo.value );
+  //actualizar las propiedades de esa pelicula
+listaPeliculas[posicionPelicula].titulo = titulo.value;
+listaPeliculas[posicionPelicula].descripcion = descripcion.value;
+listaPeliculas[posicionPelicula].imagen = imagen.value;
+listaPeliculas[posicionPelicula].genero = genero.value;
+listaPeliculas[posicionPelicula].pais = pais.value;
+listaPeliculas[posicionPelicula].duracion = duracion.value;
+listaPeliculas[posicionPelicula].reparto = reparto.value;
+listaPeliculas[posicionPelicula].anio = anio.value;
+  //actualizar el localstorage
+guardarEnLocalStorage();
+//mostrar un msj
+Swal.fire(
+  "Pelicula editada",
+  "La pelicula seleccionada fue editada correctamente",
+  "success"
+  );
+  //se vea en la tabla
+  let datosTablaPelicula = document.querySelector("tbody");
+  datosTablaPelicula.children[posicionPelicula].children[1].innerText = titulo.value;
+  datosTablaPelicula.children[posicionPelicula].children[2].innerText = descripcion.value;
+  datosTablaPelicula.children[posicionPelicula].children[3].innerText = imagen.value;
+  datosTablaPelicula.children[posicionPelicula].children[4].innerText = genero.value;
+  //limpiar el form
+  limpiarFormularioPeliculas()
+  //cerrar el modal
+  modalPelicula.hide()
 }
