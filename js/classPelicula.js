@@ -96,7 +96,8 @@ export default class Pelicula{
             duracion: this.duracion,
             pais: this.pais,
             reparto: this.reparto,
-            estado: this.estado
+            estado: this.estado,
+            anio: this.anio
         }
     }
 }
